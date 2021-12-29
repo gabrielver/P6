@@ -45,7 +45,7 @@ app.post('/api/auth/login', (req, res, next) => {
 //renvois un tableau de toutes les sauces
 app.get('/api/sauces', (req, res, next) => {
     Sauce.find()
-    .then(sauces => res.status(201).json(sauces))
+    .then(sauces => res.status(201).json([sauces]))
     .catch(error => res.status(404).json({ error }));
   });
   
