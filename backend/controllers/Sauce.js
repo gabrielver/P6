@@ -9,7 +9,7 @@ exports.getAllSauce = (req, res ,next) => {
 exports.createSauce = (req, res ,next) => {
     delete req.body._id;
     const sauce = new Sauce({
-        ...req.body,
+        ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     sauce.save()
@@ -18,13 +18,13 @@ exports.createSauce = (req, res ,next) => {
 };
 
 exports.getOneSauce = (req, res, next) => {
-    Sauce.findOne({_id: req.param.id})
-    .then(sauce => res.status(201).json({message :`j'ai la sauce`}))
+    Sauce.findOne({_id: req.params.id})
+    .then(sauce => res.status(201).json(sauce))
     .catch(error => res.status(404).json({ error }));
 };
 
 exports.updateSauce = (req, res, next) => {
-    Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    Sauce.updateOne({ _id: req.params.id }, { ...req.body.sauce, _id: req.params.id })
     .then(sauce => res.status(201).json({sauce}))
     .catch(error => res.status(404).json({ error }));
 };
