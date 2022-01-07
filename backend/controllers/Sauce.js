@@ -19,7 +19,7 @@ exports.createSauce = (req, res ,next) => {
 
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({_id: req.param.id})
-    .then(sauce => res.status(201).json(sauce))
+    .then(sauce => res.status(201).json({message :`j'ai la sauce`}))
     .catch(error => res.status(404).json({ error }));
 };
 
