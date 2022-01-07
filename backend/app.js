@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const User = require('./models/user');
-const Sauce = require('./models/sauce');
 
+const path = require('path');
+const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/stuff')
 
 mongoose.connect('mongodb+srv://gabriel:gabriel@cluster0.2fpqk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -23,31 +24,12 @@ app.use((req, res, next) => {
 
   app.use(bodyParser.json())
 
-//creation d'un compte
-app.post('/api/auth/signup', (req, res, next) => {
+  app.use('/images', express.static(path.join(__dirname, 'images')));
+  app.use('/api/auth', userRoutes);
+  app.use('/api/sauces', sauceRoutes);
 
- const user = new User({
-     ...req.body
- });
- user.save()
-  .then(() => res.status(201).json({ message: `création de l'utilisateur !`}))
-  .catch(error => res.status(400).json({ error }));
-  });
 
-//Verification des informations d'identification
-app.post('/api/auth/login', (req, res, next) => {
-    delete req.body._id;
-    User.findOne({_id: req.params.id})
-     .then(() => res.status(201).json({ userId: req.params.id }))
-     .catch(error => res.status(400).json({ error }));
-     });
 
-//renvois un tableau de toutes les sauces
-app.get('/api/sauces', (req, res, next) => {
-    Sauce.find()
-    .then(sauces => res.status(201).json([sauces]))
-    .catch(error => res.status(404).json({ error }));
-  });
-  
+
 
 module.exports = app;
