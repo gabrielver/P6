@@ -24,8 +24,9 @@ exports.getOneSauce = (req, res, next) => {
 };
 
 exports.updateSauce = (req, res, next) => {
-    Sauce.updateOne({ _id: req.params.id }, { ...req.body.sauce, _id: req.params.id })
-    .then(sauce => res.status(201).json({sauce}))
+    Sauce.updateOne({ _id: req.params.id }, {...req.body, _id: req.params.id })
+    console.log(req.body)
+    .then(() => res.status(201).json({ message: 'Objet mis a jour !'}))
     .catch(error => res.status(404).json({ error }));
 };
 
