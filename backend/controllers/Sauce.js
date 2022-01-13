@@ -49,9 +49,12 @@ exports.deleteSauce = (req, res, next) => {
 };
 
 exports.likeSauce = (req, res, next) => {
-   const likeObject = req.body.likes
+   const like = req.body.like
    const user = req.body.userId
-    Sauce.updateOne({ _id: req.params.id }, {likeObject, _id: req.params.id })
+   console.log(req.body.like)
+   console.log(req.body.userId)
+    Sauce.updateOne({ _id: req.params.id }, {user, like, _id: req.params.id})
+    
     .then(() => res.status(200).json({message : 'avis enregistré !'}))
     .catch(error => res.status(400).json({error: error}));
 }
